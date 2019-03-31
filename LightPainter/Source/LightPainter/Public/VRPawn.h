@@ -28,8 +28,15 @@ public:
 
 private:
 
-	UPROPERTY(EditAnyWhere)
-	TSubclassOf<class AHandController> ControllerBase;
+	UPROPERTY(VisibleAnyWhere)
+	USceneComponent* VRRoot = nullptr;
 
-	AHandController* RightController;
+	UPROPERTY(EditDefaultsOnly)
+	class UCameraComponent* Camera = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AHandController> ControllerBase = nullptr;
+
+	UPROPERTY(VisibleAnyWhere)
+	AHandController* RightController = nullptr;
 };

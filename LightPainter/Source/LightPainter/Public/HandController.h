@@ -23,4 +23,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+
+	class UMotionControllerComponent* Controller = nullptr;
+
+
+public:
+
+	void SetHandController(EControllerHand Hand);
+
+		
+
 };
