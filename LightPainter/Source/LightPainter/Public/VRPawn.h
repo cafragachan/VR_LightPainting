@@ -39,4 +39,8 @@ private:
 
 	UPROPERTY(VisibleAnyWhere)
 	AHandController* RightController = nullptr;
+
+	void RightTriggerPressed();
+	void RightTriggerReleased();
+
 };

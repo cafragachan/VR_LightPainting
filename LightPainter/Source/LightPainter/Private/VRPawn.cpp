@@ -4,6 +4,7 @@
 #include "HandController.h"
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
+#include "Components/InputComponent.h"
 
 
 // Sets default values
@@ -37,6 +38,7 @@ void AVRPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
 }
 
 // Called to bind functionality to input
@@ -44,5 +46,19 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
+	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
+
+}
+
+
+void AVRPawn::RightTriggerPressed()
+{
+	RightController->TriggerPressed();
+}
+
+void AVRPawn::RightTriggerReleased()
+{
+	RightController->TriggerReleased();
 }
 

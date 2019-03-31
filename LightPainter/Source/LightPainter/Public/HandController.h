@@ -25,13 +25,21 @@ public:
 
 private:
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AStroke> StrokeBase;
+
+	//AStroke* Stroke = nullptr;
+
 	class UMotionControllerComponent* Controller = nullptr;
 
+	//State
+	AStroke* CurrentStroke = nullptr;
 
 public:
 
 	void SetHandController(EControllerHand Hand);
 
-		
+	void TriggerPressed();
+	void TriggerReleased();
 
 };

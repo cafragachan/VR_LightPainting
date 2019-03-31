@@ -3,6 +3,7 @@
 #include "HandController.h"
 #include "HeadMountedDisplay/Public/MotionControllerComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Stroke.h"
 
 // Sets default values
 AHandController::AHandController()
@@ -12,7 +13,7 @@ AHandController::AHandController()
 
 	Controller = CreateDefaultSubobject<UMotionControllerComponent>("MotionController");
 	SetRootComponent(Controller);
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -27,11 +28,27 @@ void AHandController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (CurrentStroke)
+	{
+		CurrentStroke->UpdateStroke(GetActorLocation());
+	}
+
 }
 
 void AHandController::SetHandController(EControllerHand Hand)
 {
 	Controller->SetTrackingSource(Hand);
 	Controller->SetShowDeviceModel(true);
+}
+
+void AHandController::TriggerPressed()
+{
+	if (!ensure(StrokeBase)) return;
+	CurrentStroke = GetWorld()->SpawnActor<AStroke>(StrokeBase, GetActorLocation(), GetActorRotation());
+}
+
+void AHandController::TriggerReleased()
+{
+	CurrentStroke = nullptr;
 }
 
