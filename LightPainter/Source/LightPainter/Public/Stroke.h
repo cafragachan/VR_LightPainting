@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Stroke.generated.h"
 
+class UInstancedStaticMeshComponent;
+
 UCLASS()
 class LIGHTPAINTER_API AStroke : public AActor
 {
@@ -17,15 +19,21 @@ private:
 	USceneComponent* Root = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	class UStaticMesh* Mesh;
+	class UStaticMeshComponent* Mesh;
 
-	UPROPERTY(EditDefaultsOnly)
-	class UMaterialInterface* SplineMaterial;
+	//UPROPERTY(EditDefaultsOnly)
+	//class UMaterialInterface* SplineMaterial;
 
-	TArray<class USplineMeshComponent*>SplineMeshPool;
+	UPROPERTY(VisibleAnywhere)
+	class UInstancedStaticMeshComponent* InstanceMeshPool;
 
-	USplineMeshComponent* CreateSplineMesh();
+	UPROPERTY(VisibleAnywhere)
+	UInstancedStaticMeshComponent* InstanceJointsPool;
 
+	FTransform GetNextMeshTransform(FVector Location_);
+	FTransform GetNextJointTransform(FVector Location_);
+
+	//State
 	FVector PreviousLocation;
 	
 public:	

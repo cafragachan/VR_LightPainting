@@ -2,6 +2,9 @@
 
 #include "Stroke.h"
 #include "Components/SplineMeshComponent.h"
+#include "Components/InstancedStaticMeshComponent.h"
+
+
 
 
 // Sets default values
@@ -13,34 +16,56 @@ AStroke::AStroke()
 	Root = CreateDefaultSubobject<USceneComponent>("Root");
 	SetRootComponent(Root);
 
+	InstanceMeshPool = CreateDefaultSubobject<UInstancedStaticMeshComponent>("InstancedStaticMesh");
+	InstanceMeshPool->SetupAttachment(Root);
+
+	InstanceJointsPool = CreateDefaultSubobject<UInstancedStaticMeshComponent>("InstancedStaticJoints");
+	InstanceJointsPool->SetupAttachment(Root);
+
 }
 
 void AStroke::UpdateStroke(FVector CurrentLocation_)
 {
-	USplineMeshComponent* SplineMesh = CreateSplineMesh();
-	
-	if (SplineMesh)
+	if (PreviousLocation.IsNearlyZero())
 	{
-		FVector Start = PreviousLocation;
-		FVector End = GetActorTransform().InverseTransformPosition(CurrentLocation_);
-		SplineMesh->SetStartAndEnd(Start, FVector(0, 0, 0), End, FVector(0, 0, 0));
+		PreviousLocation = CurrentLocation_;
+		InstanceJointsPool->AddInstance(GetNextJointTransform(CurrentLocation_));
 
-		PreviousLocation = End;
+		return;
 	}
+
+	InstanceMeshPool->AddInstance(GetNextMeshTransform(CurrentLocation_));
+	InstanceJointsPool->AddInstance(GetNextJointTransform(CurrentLocation_));
+
+	PreviousLocation = CurrentLocation_;
+
 }
 
-USplineMeshComponent * AStroke::CreateSplineMesh()
+FTransform AStroke::GetNextMeshTransform(FVector Location_)
 {
-	if (!ensure(Mesh && SplineMaterial)) return nullptr;
+	FTransform NextTransform;
+	FVector Dir = PreviousLocation - Location_;
 
-	USplineMeshComponent* SplineMesh = NewObject<USplineMeshComponent>(this);
+	FQuat NextRotation = FQuat::FindBetweenNormals(FVector::ForwardVector, Dir.GetSafeNormal());
 
-	SplineMesh->SetVisibility(true);
-	SplineMesh->SetMobility(EComponentMobility::Movable);
-	SplineMesh->AttachToComponent(Root, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	SplineMesh->SetStaticMesh(Mesh);
-	SplineMesh->SetMaterial(0, SplineMaterial);
-	SplineMesh->RegisterComponent();
+	FVector NextScale = FVector(Dir.Size(), 1, 1);
 
-	return SplineMesh;
+	FVector NextLocation = GetTransform().InverseTransformPosition(PreviousLocation);
+
+	NextTransform.SetLocation(NextLocation);
+	NextTransform.SetRotation(NextRotation);
+	NextTransform.SetScale3D(NextScale);
+
+
+	return NextTransform;
+}
+
+FTransform AStroke::GetNextJointTransform(FVector Location_)
+{
+	FTransform NextTransform;
+	FVector NextLocation = GetTransform().InverseTransformPosition(PreviousLocation);
+
+	NextTransform.SetLocation(NextLocation);
+
+	return NextTransform;
 }
