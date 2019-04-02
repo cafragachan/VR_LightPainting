@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Saving/PainterSaveGame.h"
 #include "Stroke.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -35,11 +36,16 @@ private:
 
 	//State
 	FVector PreviousLocation;
+	TArray<FVector> ControlPoints;
+
 	
 public:	
 	// Sets default values for this actor's properties
 	AStroke();
 
 	void UpdateStroke(FVector CurrentLocation_);
+
+	FStrokeState SerializeToStruct() const;
+	static AStroke* SpawnAndDeserializeFromStroke(UWorld* World, const FStrokeState& StrokeState_);
 
 };

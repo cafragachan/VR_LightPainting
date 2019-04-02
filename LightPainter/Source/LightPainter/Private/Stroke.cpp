@@ -3,6 +3,7 @@
 #include "Stroke.h"
 #include "Components/SplineMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Engine/World.h"
 
 
 
@@ -26,6 +27,8 @@ AStroke::AStroke()
 
 void AStroke::UpdateStroke(FVector CurrentLocation_)
 {
+	ControlPoints.Add(CurrentLocation_);
+
 	if (PreviousLocation.IsNearlyZero())
 	{
 		PreviousLocation = CurrentLocation_;
@@ -38,8 +41,8 @@ void AStroke::UpdateStroke(FVector CurrentLocation_)
 	InstanceJointsPool->AddInstance(GetNextJointTransform(CurrentLocation_));
 
 	PreviousLocation = CurrentLocation_;
-
 }
+
 
 FTransform AStroke::GetNextMeshTransform(FVector Location_)
 {
@@ -68,4 +71,26 @@ FTransform AStroke::GetNextJointTransform(FVector Location_)
 	NextTransform.SetLocation(NextLocation);
 
 	return NextTransform;
+}
+
+FStrokeState AStroke::SerializeToStruct() const
+{
+	FStrokeState StrokeState;
+
+	StrokeState.ControlPoints = ControlPoints;
+	StrokeState.Class = GetClass();
+
+	return StrokeState;
+}
+
+AStroke * AStroke::SpawnAndDeserializeFromStroke(UWorld* World, const FStrokeState& StrokeState_)
+{
+	AStroke* SavedStroke = World->SpawnActor<AStroke>(StrokeState_.Class);
+
+	for (auto Point : StrokeState_.ControlPoints)
+	{
+		SavedStroke->UpdateStroke(Point);
+	}
+
+	return SavedStroke;
 }

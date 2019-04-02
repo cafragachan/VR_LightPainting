@@ -5,7 +5,7 @@
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
-
+#include "Saving/PainterSaveGame.h"
 
 // Sets default values
 AVRPawn::AVRPawn()
@@ -31,6 +31,8 @@ void AVRPawn::BeginPlay()
 		RightController->AttachToComponent(VRRoot, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		RightController->SetHandController(EControllerHand::Right);
 	}
+
+	
 }
 
 // Called every frame
@@ -48,6 +50,8 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
+	PlayerInputComponent->BindAction("Save", EInputEvent::IE_Pressed, this, &AVRPawn::Save);
+	PlayerInputComponent->BindAction("Load", EInputEvent::IE_Pressed, this, &AVRPawn::Load);
 
 }
 
@@ -61,4 +65,28 @@ void AVRPawn::RightTriggerReleased()
 {
 	RightController->TriggerReleased();
 }
+
+void AVRPawn::Save()
+{
+	UPainterSaveGame* Painting = UPainterSaveGame::Create();
+	Painting->SetState("Hello World");
+	Painting->SerializeFromWorld(GetWorld());
+	Painting->Save();
+}
+
+void AVRPawn::Load()
+{
+	UPainterSaveGame* Painting = UPainterSaveGame::Load();
+
+	if (Painting)
+	{
+		Painting->DeserializeToWorld(GetWorld());
+		UE_LOG(LogTemp, Warning, TEXT("Painting State: %s"), *Painting->GetState());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Painting not found"));
+	}
+}
+
 
