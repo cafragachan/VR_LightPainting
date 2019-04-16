@@ -35,10 +35,10 @@ private:
 	class UCameraComponent* Camera = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class AHandController> ControllerBase = nullptr;
+	TSubclassOf<class AHandControllerBase> ControllerBase = nullptr;
 
 	UPROPERTY(VisibleAnyWhere)
-	AHandController* RightController = nullptr;
+	class AHandControllerBase* RightController = nullptr;
 
 	void RightTriggerPressed();
 	void RightTriggerReleased();

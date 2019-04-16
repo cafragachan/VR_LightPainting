@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "VRPawn.h"
-#include "HandController.h"
+#include "HandControllerBase.h"
 #include "Engine/World.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
@@ -27,19 +27,17 @@ void AVRPawn::BeginPlay()
 	
 	if (ensure(ControllerBase))
 	{
-		RightController = GetWorld()->SpawnActor<AHandController>(ControllerBase);
+		RightController = GetWorld()->SpawnActor<AHandControllerBase>(ControllerBase);
 		RightController->AttachToComponent(VRRoot, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		RightController->SetHandController(EControllerHand::Right);
 	}
 
-	
 }
 
 // Called every frame
 void AVRPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 
 }
 
