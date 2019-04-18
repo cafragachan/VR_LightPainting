@@ -30,6 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void QuitClicked();
 
+	void SetParentPicker(class APaintingPicker* ParentPaintingPicker_);
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (BindWidget))
@@ -40,5 +42,10 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (BindWidget))
 	UButton* QuitButton;
+
+private:
+
+	UPROPERTY()
+	class APaintingPicker* ParentPaintingPicker;
 	
 };

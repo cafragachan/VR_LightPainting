@@ -2,6 +2,7 @@
 
 #include "ActionButtons.h"
 #include "Public/Blueprint/UserWidget.h"
+#include "PaintingPicker.h"
 
 bool UActionButtons::Initialize()
 {
@@ -20,19 +21,27 @@ bool UActionButtons::Initialize()
 	return true;
 }
 
+
 void UActionButtons::AddClicked()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Clicked Add"));
-
+	ParentPaintingPicker->AddPainting();
 }
+
 
 void UActionButtons::DeleteClicked()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Clicked Delete"));
+	ParentPaintingPicker->EnableDeleteMode();
 
 }
+
 
 void UActionButtons::QuitClicked()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Clicked Quit"));
+}
+
+
+void UActionButtons::SetParentPicker(APaintingPicker * ParentPaintingPicker_)
+{
+	ParentPaintingPicker = ParentPaintingPicker_;
 }

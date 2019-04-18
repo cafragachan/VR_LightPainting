@@ -32,4 +32,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UWidgetComponent* ActionBar = nullptr;
 
+	void AddPainting();
+
+	void EnableDeleteMode();
+
 };

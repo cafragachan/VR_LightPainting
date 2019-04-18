@@ -33,13 +33,6 @@ void AVRPawn::BeginPlay()
 		RightController->SetHandController(EControllerHand::Right);
 	}
 
-	//Create Painting=SaveGame Instance and set the slotname in the SlotName internal variable
-	UPainterSaveGame* PaintingSave = UPainterSaveGame::Create();
-	if (PaintingSave)
-	{
-		PaintingSave->Save();
-		PaintingSaveSlotName = PaintingSave->GetSlotName();
-	}
 }
 
 
