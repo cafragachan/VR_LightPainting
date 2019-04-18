@@ -13,13 +13,9 @@ AUIPointerHandController::AUIPointerHandController()
 void AUIPointerHandController::TriggerPressed()
 {
 	InteractionComponent->PressPointerKey(EKeys::LeftMouseButton);
-	UE_LOG(LogTemp, Warning, TEXT("Hello CPP"));
-
 }
 
 void AUIPointerHandController::TriggerReleased()
 {
 	InteractionComponent->ReleasePointerKey(EKeys::LeftMouseButton);
-	UE_LOG(LogTemp, Warning, TEXT("Hello CPP"));
-
 }

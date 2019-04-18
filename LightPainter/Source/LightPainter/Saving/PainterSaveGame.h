@@ -33,9 +33,6 @@ private:
 	FString SlotName;
 
 	UPROPERTY()
-	FString State;
-
-	UPROPERTY()
 	TArray<FStrokeState> Strokes;
 	
 
@@ -44,10 +41,6 @@ public:
 	static UPainterSaveGame* Load(FString SlotName_);
 	static UPainterSaveGame* Create();
 	bool Save();
-
-
-	void SetState(FString State_);
-	FString GetState();
 
 	void SerializeFromWorld(UWorld* World);
 	void DeserializeToWorld(UWorld* World);

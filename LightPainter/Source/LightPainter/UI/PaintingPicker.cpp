@@ -3,6 +3,7 @@
 #include "PaintingPicker.h"
 #include "PaintingGrid.h"
 #include "Saving/PainterSaveGameIndex.h"
+#include "ActionButtons.h"
 
 // Sets default values
 APaintingPicker::APaintingPicker()

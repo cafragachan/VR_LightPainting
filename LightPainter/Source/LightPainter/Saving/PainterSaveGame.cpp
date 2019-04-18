@@ -42,19 +42,6 @@ UPainterSaveGame * UPainterSaveGame::Load(FString SlotName_)
 }
 
 
-
-void UPainterSaveGame::SetState(FString State_)
-{
-	State = State_;
-}
-
-FString UPainterSaveGame::GetState()
-{
-	return State;
-}
-
-
-
 void UPainterSaveGame::SerializeFromWorld(UWorld * World)
 {
 	Strokes.Empty();

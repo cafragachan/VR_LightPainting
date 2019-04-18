@@ -12,10 +12,6 @@ void APaintingGameMode::InitGame(const FString & MapName, const FString & Option
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	SlotName = UGameplayStatics::ParseOption(Options, "SlotName");
-
-	UE_LOG(LogTemp, Warning, TEXT("Slot Name:"));
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *SlotName);
-
 }
 
 void APaintingGameMode::BeginPlay()

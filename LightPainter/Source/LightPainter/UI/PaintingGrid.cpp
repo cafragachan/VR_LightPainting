@@ -17,8 +17,5 @@ void UPaintingGrid::AddPainting(int32 CardIndex, FString PaintingName)
 
 		if (!Box) return;
 		Box->AddChild(Card);
-
-		UE_LOG(LogTemp, Warning, TEXT("Box: %s"), *Box->GetName());
-
 	}
 }
