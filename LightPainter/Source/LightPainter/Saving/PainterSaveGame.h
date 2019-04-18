@@ -30,6 +30,9 @@ class LIGHTPAINTER_API UPainterSaveGame : public USaveGame
 private:
 
 	UPROPERTY()
+	FString SlotName;
+
+	UPROPERTY()
 	FString State;
 
 	UPROPERTY()
@@ -38,7 +41,7 @@ private:
 
 public:
 
-	static UPainterSaveGame* Load();
+	static UPainterSaveGame* Load(FString SlotName_);
 	static UPainterSaveGame* Create();
 	bool Save();
 
@@ -48,4 +51,6 @@ public:
 
 	void SerializeFromWorld(UWorld* World);
 	void DeserializeToWorld(UWorld* World);
+
+	FString GetSlotName() const { return SlotName; }
 };

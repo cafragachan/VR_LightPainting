@@ -6,11 +6,11 @@
 #include "Engine/World.h"
 #include "Stroke.h"
 #include "EngineUtils.h"
+#include "Misc/Guid.h"
 
-
-UPainterSaveGame * UPainterSaveGame::Load()
+UPainterSaveGame * UPainterSaveGame::Load(FString SlotName_)
 {
-	UPainterSaveGame* PainterLoadedGame = Cast<UPainterSaveGame>(UGameplayStatics::LoadGameFromSlot("test", 0));
+	UPainterSaveGame* PainterLoadedGame = Cast<UPainterSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName_, 0));
 
 	return PainterLoadedGame;
 }
@@ -18,13 +18,14 @@ UPainterSaveGame * UPainterSaveGame::Load()
 UPainterSaveGame * UPainterSaveGame::Create()
 {
 	UPainterSaveGame* PainterSaveGame = Cast<UPainterSaveGame>(UGameplayStatics::CreateSaveGameObject(StaticClass()));
+	PainterSaveGame->SlotName = FGuid::NewGuid().ToString();
 
 	return PainterSaveGame;
 }
 
 bool UPainterSaveGame::Save()
 {
-	return UGameplayStatics::SaveGameToSlot(this, "test", 0);
+	return UGameplayStatics::SaveGameToSlot(this, SlotName, 0);
 }
 
 void UPainterSaveGame::SetState(FString State_)

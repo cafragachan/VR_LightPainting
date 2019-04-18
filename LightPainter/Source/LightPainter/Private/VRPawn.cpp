@@ -7,7 +7,7 @@
 #include "Components/InputComponent.h"
 #include "Saving/PainterSaveGame.h"
 
-// Sets default values
+
 AVRPawn::AVRPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -20,7 +20,7 @@ AVRPawn::AVRPawn()
 	Camera->SetupAttachment(VRRoot);
 }
 
-// Called when the game starts or when spawned
+
 void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -32,9 +32,16 @@ void AVRPawn::BeginPlay()
 		RightController->SetHandController(EControllerHand::Right);
 	}
 
+	//Create Painting=SaveGame Instance and set the slotname in the SlotName internal variable
+	UPainterSaveGame* PaintingSave = UPainterSaveGame::Create();
+	if (PaintingSave)
+	{
+		PaintingSave->Save();
+		PaintingSaveSlotName = PaintingSave->GetSlotName();
+	}
 }
 
-// Called every frame
+
 void AVRPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -66,20 +73,21 @@ void AVRPawn::RightTriggerReleased()
 
 void AVRPawn::Save()
 {
-	UPainterSaveGame* Painting = UPainterSaveGame::Create();
-	Painting->SetState("Hello World");
-	Painting->SerializeFromWorld(GetWorld());
-	Painting->Save();
+	UPainterSaveGame* PaintingSave = UPainterSaveGame::Load(PaintingSaveSlotName);
+
+	if (!PaintingSave) return;
+	PaintingSave->SerializeFromWorld(GetWorld());
+	PaintingSave->Save();
 }
 
 void AVRPawn::Load()
 {
-	UPainterSaveGame* Painting = UPainterSaveGame::Load();
+	UPainterSaveGame* PaintingSave = UPainterSaveGame::Load(PaintingSaveSlotName);
 
-	if (Painting)
+	if (PaintingSave)
 	{
-		Painting->DeserializeToWorld(GetWorld());
-		UE_LOG(LogTemp, Warning, TEXT("Painting State: %s"), *Painting->GetState());
+		PaintingSave->DeserializeToWorld(GetWorld());
+		//UE_LOG(LogTemp, Warning, TEXT("Painting State: %s"), *PaintingSave->GetState());
 	}
 	else
 	{

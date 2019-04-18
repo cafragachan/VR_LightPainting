@@ -40,6 +40,9 @@ private:
 	UPROPERTY(VisibleAnyWhere)
 	class AHandControllerBase* RightController = nullptr;
 
+
+	FString PaintingSaveSlotName;
+
 	void RightTriggerPressed();
 	void RightTriggerReleased();
 	void Save();
