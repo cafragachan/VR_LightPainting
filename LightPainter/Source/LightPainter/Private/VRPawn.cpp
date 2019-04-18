@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Saving/PainterSaveGame.h"
+#include "PaintingGameMode.h"
 
 
 AVRPawn::AVRPawn()
@@ -56,8 +57,6 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
 	PlayerInputComponent->BindAction("Save", EInputEvent::IE_Pressed, this, &AVRPawn::Save);
-	PlayerInputComponent->BindAction("Load", EInputEvent::IE_Pressed, this, &AVRPawn::Load);
-
 }
 
 
@@ -73,26 +72,12 @@ void AVRPawn::RightTriggerReleased()
 
 void AVRPawn::Save()
 {
-	UPainterSaveGame* PaintingSave = UPainterSaveGame::Load(PaintingSaveSlotName);
+	auto MyGameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
+	MyGameMode->Save();
 
-	if (!PaintingSave) return;
-	PaintingSave->SerializeFromWorld(GetWorld());
-	PaintingSave->Save();
 }
 
-void AVRPawn::Load()
-{
-	UPainterSaveGame* PaintingSave = UPainterSaveGame::Load(PaintingSaveSlotName);
 
-	if (PaintingSave)
-	{
-		PaintingSave->DeserializeToWorld(GetWorld());
-		//UE_LOG(LogTemp, Warning, TEXT("Painting State: %s"), *PaintingSave->GetState());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Painting not found"));
-	}
-}
+
 
 

@@ -3,15 +3,17 @@
 #include "PaintingGrid.h"
 #include "Components/SizeBox.h"
 #include "Engine/World.h"
+#include "PaintingGridCard.h"
 
-void UPaintingGrid::AddPainting()
+void UPaintingGrid::AddPainting(int32 CardIndex, FString PaintingName)
 {
 	if (PaintingGrid)
 	{
-		UUserWidget * Card = CreateWidget<UUserWidget>(GetWorld(), CardClass);
+		UPaintingGridCard * Card = CreateWidget<UPaintingGridCard>(GetWorld(), CardClass);
 
 		if (!Card) return;
-		auto Box = Cast<USizeBox>(PaintingGrid->GetChildAt(0));
+		Card->SetPaintingName(PaintingName);
+		auto Box = Cast<USizeBox>(PaintingGrid->GetChildAt(CardIndex));
 
 		if (!Box) return;
 		Box->AddChild(Card);

@@ -7,6 +7,32 @@
 #include "Stroke.h"
 #include "EngineUtils.h"
 #include "Misc/Guid.h"
+#include "PainterSaveGameIndex.h"
+
+
+
+UPainterSaveGame * UPainterSaveGame::Create()
+{
+	UPainterSaveGame* PainterSaveGame = Cast<UPainterSaveGame>(UGameplayStatics::CreateSaveGameObject(StaticClass()));
+	PainterSaveGame->SlotName = FGuid::NewGuid().ToString();
+
+	if (!PainterSaveGame->Save()) return nullptr;
+
+	UPainterSaveGameIndex* Index = UPainterSaveGameIndex::Load();
+	Index->AddSaveGame(PainterSaveGame);
+	Index->Save();
+
+	return PainterSaveGame;
+}
+
+
+
+bool UPainterSaveGame::Save()
+{
+	return UGameplayStatics::SaveGameToSlot(this, SlotName, 0);
+}
+
+
 
 UPainterSaveGame * UPainterSaveGame::Load(FString SlotName_)
 {
@@ -15,18 +41,7 @@ UPainterSaveGame * UPainterSaveGame::Load(FString SlotName_)
 	return PainterLoadedGame;
 }
 
-UPainterSaveGame * UPainterSaveGame::Create()
-{
-	UPainterSaveGame* PainterSaveGame = Cast<UPainterSaveGame>(UGameplayStatics::CreateSaveGameObject(StaticClass()));
-	PainterSaveGame->SlotName = FGuid::NewGuid().ToString();
 
-	return PainterSaveGame;
-}
-
-bool UPainterSaveGame::Save()
-{
-	return UGameplayStatics::SaveGameToSlot(this, SlotName, 0);
-}
 
 void UPainterSaveGame::SetState(FString State_)
 {
@@ -37,6 +52,8 @@ FString UPainterSaveGame::GetState()
 {
 	return State;
 }
+
+
 
 void UPainterSaveGame::SerializeFromWorld(UWorld * World)
 {

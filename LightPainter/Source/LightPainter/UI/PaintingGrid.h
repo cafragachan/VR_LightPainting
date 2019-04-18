@@ -22,11 +22,11 @@ protected:
 	UUniformGridPanel* PaintingGrid;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> CardClass;
+	TSubclassOf<class UPaintingGridCard> CardClass;
 
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
-	void AddPainting();
+	void AddPainting(int32 CardIndex, FString PaintingName);
 	
 };
