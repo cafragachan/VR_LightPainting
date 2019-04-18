@@ -35,17 +35,21 @@ private:
 	class UCameraComponent* Camera = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class AHandControllerBase> ControllerBase = nullptr;
+	TSubclassOf<class AHandControllerBase> RightControllerBase = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AHandControllerBase> LeftControllerBase = nullptr;
 
 	UPROPERTY(VisibleAnyWhere)
 	class AHandControllerBase* RightController = nullptr;
 
+	UPROPERTY(VisibleAnyWhere)
+	class AHandControllerBase* LeftController = nullptr;
 
 	FString PaintingSaveSlotName;
 
 	void RightTriggerPressed();
 	void RightTriggerReleased();
 	void Save();
-
 
 };

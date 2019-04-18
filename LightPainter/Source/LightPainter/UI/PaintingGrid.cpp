@@ -19,3 +19,17 @@ void UPaintingGrid::AddPainting(int32 CardIndex, FString PaintingName)
 		Box->AddChild(Card);
 	}
 }
+
+void UPaintingGrid::ClearPainting()
+{
+	if (PaintingGrid)
+	{
+		auto GridCount = PaintingGrid->GetChildrenCount();
+
+		for (int i = 0; i < GridCount; ++i)
+		{
+			Cast<UPanelWidget>(PaintingGrid->GetChildAt(i))->ClearChildren();
+		}
+
+	}
+}

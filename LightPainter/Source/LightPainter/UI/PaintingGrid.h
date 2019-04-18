@@ -28,5 +28,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void AddPainting(int32 CardIndex, FString PaintingName);
+
+	void ClearPainting();
 	
 };
