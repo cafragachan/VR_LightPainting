@@ -24,6 +24,7 @@ protected:
 
 	void LoadPaintings();
 
+
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

@@ -4,6 +4,8 @@
 #include "Components/SizeBox.h"
 #include "Engine/World.h"
 #include "PaintingGridCard.h"
+#include "DotWidget.h"
+#include "Components/HorizontalBoxSlot.h"
 
 void UPaintingGrid::AddPainting(int32 CardIndex, FString PaintingName)
 {
@@ -31,5 +33,19 @@ void UPaintingGrid::ClearPainting()
 			Cast<UPanelWidget>(PaintingGrid->GetChildAt(i))->ClearChildren();
 		}
 
+	}
+}
+
+void UPaintingGrid::AddDotWidget(bool bIsActive)
+{
+	if (PaginationBox)
+	{
+		if (!ensure(DotWidgetBase)) return;
+		UDotWidget* PaginationDot = CreateWidget<UDotWidget>(this, DotWidgetBase);
+
+		if (!PaginationDot) return;
+		PaginationDot->SetActive(bIsActive);
+		UHorizontalBoxSlot* BoxSlot = PaginationBox->AddChildToHorizontalBox(PaginationDot);
+		BoxSlot->SetPadding(FMargin(8.f, 0, 0, 0));
 	}
 }

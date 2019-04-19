@@ -25,8 +25,7 @@ APaintingPicker::APaintingPicker()
 void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	
+
 	auto ActionBarWidget = Cast<UActionButtons>(ActionBar->GetUserWidgetObject());
 
 	if (ActionBarWidget)
@@ -42,6 +41,10 @@ void APaintingPicker::LoadPaintings()
 {
 	auto PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
 	if (!PaintingGridWidget) return;
+
+	PaintingGridWidget->AddDotWidget(true);
+	PaintingGridWidget->AddDotWidget(false);
+	PaintingGridWidget->AddDotWidget(false);
 
 	PaintingGridWidget->ClearPainting();
 

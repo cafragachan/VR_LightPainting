@@ -20,7 +20,10 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category = Saving)
 	void Save();
+
+	UFUNCTION(BlueprintCallable, Category = Saving)
 	void Load();
 
 private:
