@@ -37,6 +37,12 @@ void APaintingPicker::BeginPlay()
 
 }
 
+void APaintingPicker::UpdatePages(int32 Offset)
+{
+	CurrentPageNumber = FMath::Clamp(CurrentPageNumber + Offset, 0, GetNumberOfPages() - 1);
+	Refresh();
+}
+
 void APaintingPicker::RefreshPaintingSlots()
 {
 	auto PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
@@ -44,15 +50,13 @@ void APaintingPicker::RefreshPaintingSlots()
 
 	PaintingGridWidget->ClearPainting();
 
+	int32 IndexOffset = CurrentPageNumber * PaintingGridWidget->GetNumberOfSlots();
 	TArray<FString> IndexSlotNames = UPainterSaveGameIndex::Load()->GetSlotNames();
 
-	for (int i = 0; i < IndexSlotNames.Num(); ++i)
+	for (int i = 0; i < PaintingGridWidget->GetNumberOfSlots() && i + IndexOffset < IndexSlotNames.Num(); ++i)
 	{
-		PaintingGridWidget->AddPainting(i, IndexSlotNames[i]);
+		PaintingGridWidget->AddPainting(i, IndexSlotNames[i + IndexOffset]);
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Number of Pages: %i"), GetNumberOfPages());
-
 }
 
 void APaintingPicker::RefreshPaginationDots()

@@ -40,12 +40,13 @@ public:
 
 	void EnableDeleteMode();
 
+	void UpdatePages(int32 Offset);
+
 private:
 
 	int32 GetNumberOfPages() const;
 
 	//State
-	UPROPERTY(EditAnywhere)
-	int32 CurrentPageNumber;
+	int32 CurrentPageNumber = 0;
 
 };

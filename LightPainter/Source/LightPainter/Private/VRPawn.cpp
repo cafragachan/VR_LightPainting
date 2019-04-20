@@ -7,7 +7,8 @@
 #include "Components/InputComponent.h"
 #include "Saving/PainterSaveGame.h"
 #include "PaintingGameMode.h"
-
+#include "EngineUtils.h"
+#include "UI/PaintingPicker.h"
 
 AVRPawn::AVRPawn()
 {
@@ -54,7 +55,8 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction("Paint", EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
-	PlayerInputComponent->BindAction("Save", EInputEvent::IE_Pressed, this, &AVRPawn::Save);
+	PlayerInputComponent->BindAxis("PaginationRight", this, &AVRPawn::TogglePagination);
+
 }
 
 
@@ -68,11 +70,25 @@ void AVRPawn::RightTriggerReleased()
 	RightController->TriggerReleased();
 }
 
-void AVRPawn::Save()
+void AVRPawn::TogglePagination(float InputAxis)
 {
-	auto MyGameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
-	MyGameMode->Save();
+	int32 NewPaginate = 0;
+	if (InputAxis > 0.5f) NewPaginate = 1;
+	if (InputAxis < -0.5f) NewPaginate = -1;
 
+	if (NewPaginate == PaginationOffset) return;
+	PaginationOffset = NewPaginate;
+
+	if (PaginationOffset == 0) return;
+	UpdatePaintingPicker(PaginationOffset);
+}
+
+void AVRPawn::UpdatePaintingPicker(int32 Offset)
+{
+	for (TActorIterator<APaintingPicker> PaintingPickerItr(GetWorld()); PaintingPickerItr; ++PaintingPickerItr)
+	{
+		PaintingPickerItr->UpdatePages(Offset);
+	}
 }
 
 

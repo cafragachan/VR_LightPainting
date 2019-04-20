@@ -50,6 +50,10 @@ private:
 
 	void RightTriggerPressed();
 	void RightTriggerReleased();
-	void Save();
+	void TogglePagination(float InputAxis);
+	void UpdatePaintingPicker(int32 Offset);
+
+	//State
+	int32 PaginationOffset;
 
 };
