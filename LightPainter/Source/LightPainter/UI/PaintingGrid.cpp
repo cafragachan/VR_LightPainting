@@ -36,6 +36,12 @@ void UPaintingGrid::ClearPainting()
 	}
 }
 
+void UPaintingGrid::ClearPaginationDots()
+{
+	if (!PaginationBox) return;
+	PaginationBox->ClearChildren();
+}
+
 void UPaintingGrid::AddDotWidget(bool bIsActive)
 {
 	if (PaginationBox)
@@ -46,6 +52,13 @@ void UPaintingGrid::AddDotWidget(bool bIsActive)
 		if (!PaginationDot) return;
 		PaginationDot->SetActive(bIsActive);
 		UHorizontalBoxSlot* BoxSlot = PaginationBox->AddChildToHorizontalBox(PaginationDot);
-		BoxSlot->SetPadding(FMargin(8.f, 0, 0, 0));
+		BoxSlot->SetPadding(FMargin(8.f, 0));
+		
 	}
+}
+
+int32 UPaintingGrid::GetNumberOfSlots() const
+{
+	if (!PaintingGrid) return 0;
+	return PaintingGrid->GetChildrenCount();
 }

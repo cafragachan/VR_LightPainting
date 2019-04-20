@@ -38,6 +38,10 @@ public:
 
 	void ClearPainting();
 
+	void ClearPaginationDots();
+
 	void AddDotWidget(bool bIsActive);
+
+	int32 GetNumberOfSlots() const;
 	
 };

@@ -22,8 +22,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void LoadPaintings();
+	void Refresh() { RefreshPaintingSlots(); RefreshPaginationDots(); }
 
+	void RefreshPaintingSlots();
+
+	void RefreshPaginationDots();
 
 public:
 
@@ -36,5 +39,13 @@ public:
 	void AddPainting();
 
 	void EnableDeleteMode();
+
+private:
+
+	int32 GetNumberOfPages() const;
+
+	//State
+	UPROPERTY(EditAnywhere)
+	int32 CurrentPageNumber;
 
 };
